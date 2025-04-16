@@ -1,0 +1,42 @@
+<div class="container">
+  <h2>Autoasistencia Escolar</h2>
+
+  <!-- Selector de grupo -->
+  <label for="grupo">Selecciona el grupo:</label>
+  <select id="grupo" [(ngModel)]="grupoSeleccionado" (change)="cargarAsistencia()">
+    <option value="4-1">4-1</option>
+    <option value="4-2">4-2</option>
+    <option value="4-3">4-3</option>
+  </select>
+
+  <br><br>
+
+  <!-- Botón para guardar la asistencia -->
+  <button (click)="guardarAsistencia()">Guardar Asistencia</button>
+  
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Estudiante</th>
+        <th>Estado</th>
+        <th>Emoji</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{ student.name }}</td>
+        <td>
+          <button (click)="student.estado = 'Presente'">✅</button>
+          <button (click)="student.estado = 'Ausente'">❌</button>
+          <span>{{ student.estado }}</span>
+        </td>
+        <td>
+          <button *ngFor="let emoji of emojis" (click)="assignEmoji(student, emoji)">
+            {{ emoji }}
+          </button>
+          <span>{{ student.emoji }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
