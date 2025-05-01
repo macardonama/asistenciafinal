@@ -23,6 +23,7 @@ export class AttendanceComponent implements OnInit {
 
   // Carga asistencia o estudiantes nuevos según el grupo
   cargarAsistencia() {
+    this.students = [];  // ← limpia la lista antes de volver a llenarla
     this.http.get<any[]>('https://asistencia-server.onrender.com/obtenerAsistencia')
       .subscribe(data => {
         if (data.length && data[0].grupo === this.grupoSeleccionado) {
