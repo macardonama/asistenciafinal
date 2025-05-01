@@ -56,12 +56,13 @@ export class AttendanceComponent implements OnInit {
   }
 
   guardarAsistencia() {
+    console.log("Enviando a guardar:", this.students); // asegúrate que es un array de objetos
+    console.log(JSON.stringify(this.students, null, 2));
     this.http.post('https://asistencia-server.onrender.com/guardarAsistencia', this.students)
       .subscribe({
         next: response => {
-          console.log('Asistencia guardada en el servidor:', response);
           alert('✅ Su asistencia ha quedado guardada satisfactoriamente');
-          this.students = []; // Limpia solo después de recibir respuesta exitosa
+          this.students = [];
         },
         error: error => {
           console.error('Error al guardar la asistencia:', error);
@@ -69,6 +70,7 @@ export class AttendanceComponent implements OnInit {
         }
       });
   }
+  
   
   
 }
