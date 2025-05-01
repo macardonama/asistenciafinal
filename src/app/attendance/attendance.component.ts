@@ -65,12 +65,18 @@ export class AttendanceComponent implements OnInit {
     }));
   
     this.http.post('https://asistencia-server.onrender.com/guardarAsistencia', datosLimpios)
-      .subscribe(response => {
-        console.log('Asistencia guardada en el servidor:', response);
-      }, error => {
-        console.error('Error al guardar la asistencia:', error);
+      .subscribe({
+        next: response => {
+          alert('✅ Su asistencia ha quedado guardada satisfactoriamente');
+          this.students = []; // Opcional: limpiar la lista si quieres
+        },
+        error: error => {
+          alert('❌ Hubo un error al guardar la asistencia. Intente nuevamente.');
+          console.error('Error al guardar la asistencia:', error);
+        }
       });
   }
+  
   
   
   
