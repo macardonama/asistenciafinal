@@ -61,7 +61,7 @@ export class AttendanceComponent implements OnInit {
         next: response => {
           console.log('Asistencia guardada en el servidor:', response);
           alert('✅ Su asistencia ha quedado guardada satisfactoriamente');
-          this.students = []; // 🔄 Limpia la lista después de guardar
+          this.students = []; // Limpia solo después de recibir respuesta exitosa
         },
         error: error => {
           console.error('Error al guardar la asistencia:', error);
@@ -69,5 +69,6 @@ export class AttendanceComponent implements OnInit {
         }
       });
   }
+  
   
 }
