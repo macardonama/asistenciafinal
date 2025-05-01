@@ -56,26 +56,34 @@ export class AttendanceComponent implements OnInit {
   }
 
   guardarAsistencia() {
-    const datosLimpios = this.students.map(est => ({
-      nombre: est.nombre || est.name,
-      estado: est.estado,
-      emocion: est.emocion || est.emoji,
-      grupo: est.grupo,
-      fecha: est.fecha
-    }));
+    const datosLimpios = this.students
+      .filter(s => s.emoji)  // solo los que marcaron emoji
+      .map(({ name, emoji, grupo }) => ({
+        name,
+        emoji,
+        grupo,
+        fecha: new Date().toISOString().split('T')[0] // yyyy-mm-dd
+      }));
+  
+    if (datosLimpios.length === 0) {
+      alert('No hay asistencia para guardar.');
+      return;
+    }
+  
+    console.log('Enviando asistencia:', datosLimpios);
   
     this.http.post('https://asistencia-server.onrender.com/guardarAsistencia', datosLimpios)
-      .subscribe({
-        next: response => {
-          alert('✅ Su asistencia ha quedado guardada satisfactoriamente');
-          this.students = []; // Opcional: limpiar la lista si quieres
+      .subscribe(
+        () => {
+          alert('Asistencia guardada exitosamente');
         },
-        error: error => {
-          alert('❌ Hubo un error al guardar la asistencia. Intente nuevamente.');
+        (error) => {
           console.error('Error al guardar la asistencia:', error);
+          alert('Error al guardar la asistencia');
         }
-      });
+      );
   }
+  
   
   
   
