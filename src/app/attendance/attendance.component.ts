@@ -59,8 +59,9 @@ export class AttendanceComponent implements OnInit {
   guardarAsistencia() {
     const datosLimpios = this.students
       .filter(s => s.emoji)  // solo los que marcaron emoji
-      .map(({ name, emoji, grupo }) => ({
+      .map(({ name, estado, emoji, grupo }) => ({
         name,
+        estado,
         emoji,
         grupo,
         fecha: new Date().toISOString().split('T')[0] // yyyy-mm-dd
