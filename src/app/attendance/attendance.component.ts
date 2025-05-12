@@ -32,7 +32,14 @@ export class AttendanceComponent implements OnInit {
     this.http.get<any[]>('https://asistencia-server.onrender.com/obtenerAsistencia')
       .subscribe(data => {
         if (data.length && data[0].grupo === this.grupoSeleccionado) {
-          this.students = data.filter(s => s.grupo === this.grupoSeleccionado);
+          const estudiantesGrupo = data.filter(s => s.grupo === this.grupoSeleccionado);
+          // Eliminar duplicados por nombre (solo deja el primero que encuentra)
+          const nombresUnicos = new Set();
+          this.students = estudiantesGrupo.filter(s => {
+            if (nombresUnicos.has(s.name)) return false;
+            nombresUnicos.add(s.name);
+            return true;
+          });
         } else {
           const archivo = {
             '4-1': '/assets/estudiantes1.json',
