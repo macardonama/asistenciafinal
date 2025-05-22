@@ -44,7 +44,8 @@ export class AttendanceComponent implements OnInit {
           const archivo = {
             '4-1': '/assets/estudiantes1.json',
             '4-2': '/assets/estudiantes2.json',
-            '4-3': '/assets/estudiantes3.json'
+            '4-3': '/assets/estudiantes3.json',
+            '4-4': '/assets/estudiantes4.json'
           }[this.grupoSeleccionado];
           if (!archivo) {
             console.error('Grupo no válido:', this.grupoSeleccionado);
