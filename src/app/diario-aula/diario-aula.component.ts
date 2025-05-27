@@ -25,7 +25,7 @@ export class DiarioAulaComponent implements OnInit {
   cargarEstudiantes() {
     this.http.get<any[]>('assets/estudiantes3.json').subscribe(data => {
       this.estudiantes = data.map(e => ({
-        nombre_estudiante: e.nombre,
+        nombre_estudiante: e.name,
         observacion: '',
         enviar_a_padre: false
       }));
@@ -34,22 +34,29 @@ export class DiarioAulaComponent implements OnInit {
   }
 
   guardar() {
-    const datos = {
-      grupo: this.grupo,
-      fecha: this.fecha,
-      observacion_general: this.observacionGeneral,
-      observaciones_individuales: this.estudiantes
-    };
+  const datos = {
+    grupo: this.grupo,
+    fecha: this.fecha,
+    observacion_general: this.observacionGeneral,
+    observaciones_individuales: this.estudiantes  // <--- usamos estudiantes
+  };
 
-    this.http.post('https://asistencia-server.onrender.com/diario-aula', datos)
-      .subscribe({
-        next: res => {
-          alert('✅ Entrada guardada exitosamente');
-        },
-        error: err => {
-          alert('❌ Error al guardar entrada');
-          console.error(err);
-        }
-      });
+  this.http.post('https://asistencia-server.onrender.com/diario-aula', datos)
+    .subscribe({
+      next: res => {
+        console.log('✅ Enviado correctamente:', res);
+        alert('Entrada guardada exitosamente');
+        this.observacionGeneral = '';
+        this.estudiantes.forEach(e => {
+          e.observacion = '';
+          e.enviar_a_padre = false;
+        });
+      },
+      error: err => {
+        console.error('❌ Error al enviar:', err);
+        alert('Error al guardar entrada');
+      }
+    });
   }
+
 }
