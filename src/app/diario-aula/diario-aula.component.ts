@@ -34,16 +34,21 @@ export class DiarioAulaComponent implements OnInit {
   }
 
   guardar() {
+  const observaciones_validas = this.estudiantes
+    .filter(est => est.observacion.trim() !== '' || est.enviar_a_padre)
+    .map(est => ({
+      nombre_estudiante: est.nombre_estudiante,
+      observacion: est.observacion,
+      enviar_a_padre: est.enviar_a_padre
+    }));
+
   const datos = {
     grupo: this.grupo,
     fecha: this.fecha,
     observacion_general: this.observacionGeneral,
-    observaciones_individuales: this.estudiantes.map(est => ({
-      nombre_estudiante: est.nombre_estudiante,
-      observacion: est.observacion,
-      enviar_a_padre: est.enviar_a_padre
-    }))
+    observaciones_individuales: observaciones_validas
   };
+
   console.log('Datos que se envían:', datos);
 
   this.http.post('https://asistencia-server.onrender.com/diario-aula', datos)
@@ -63,6 +68,7 @@ export class DiarioAulaComponent implements OnInit {
       }
     });
 }
+
 
 
 }
