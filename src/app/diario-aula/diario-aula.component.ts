@@ -24,11 +24,12 @@ export class DiarioAulaComponent implements OnInit {
 
   cargarEstudiantes() {
     this.http.get<any[]>('assets/estudiantes3.json').subscribe(data => {
-      this.estudiantes = data.map(nombre => ({
-        nombre_estudiante: nombre,
+      this.estudiantes = data.map(e => ({
+        nombre_estudiante: e.nombre,
         observacion: '',
         enviar_a_padre: false
       }));
+
     });
   }
 
