@@ -2,26 +2,26 @@
 
 <form #formulario="ngForm" (ngSubmit)="guardar()">
   <label for="grupo">Grupo:</label>
-  <input type="text" id="grupo" [(ngModel)]="grupo" name="grupo" required>
+  <input type="text" id="grupo" name="grupo" [(ngModel)]="grupo" required>
 
   <label for="fecha">Fecha:</label>
-  <input type="date" id="fecha" [(ngModel)]="fecha" name="fecha" required>
+  <input type="date" id="fecha" name="fecha" [(ngModel)]="fecha" required>
 
-  <label for="observacionGeneral">Observación general:</label>
-  <textarea id="observacionGeneral" [(ngModel)]="observacionGeneral" name="observacionGeneral"></textarea>
+  <label for="observacionGeneral">Observación General:</label>
+  <textarea id="observacionGeneral" name="observacionGeneral" [(ngModel)]="observacionGeneral"></textarea>
 
   <hr>
 
-  <h3>Observaciones individuales</h3>
+  <h3>Observaciones Individuales</h3>
 
-  <label for="nombre_estudiante">Nombre del estudiante:</label>
-  <input type="text" id="nombre_estudiante" [(ngModel)]="nuevaObs.nombre_estudiante" name="nombre_estudiante">
+  <label for="nombre">Nombre del estudiante:</label>
+  <input type="text" id="nombre" name="nombre_estudiante" [(ngModel)]="nuevaObs.nombre_estudiante">
 
   <label for="observacion">Observación:</label>
-  <input type="text" id="observacion" [(ngModel)]="nuevaObs.observacion" name="observacion">
+  <input type="text" id="observacion" name="observacion" [(ngModel)]="nuevaObs.observacion">
 
   <label>
-    <input type="checkbox" [(ngModel)]="nuevaObs.enviar_a_padre" name="enviar_a_padre">
+    <input type="checkbox" name="enviar_a_padre" [(ngModel)]="nuevaObs.enviar_a_padre">
     Enviar a padre de familia
   </label>
 
