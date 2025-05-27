@@ -1,3 +1,10 @@
+<label for="grupo">Grupo:</label>
+<select [(ngModel)]="grupo" (change)="cargarEstudiantes()">
+  <option value="4-1">4-1</option>
+  <option value="4-2">4-2</option>
+  <option value="4-3">4-3</option>
+  <option value="4-4">4-4</option>
+</select>
 <h2>Registro Diario de Aula - {{ grupo }}</h2>
 
 <form (ngSubmit)="guardar()" #formulario="ngForm">
@@ -10,7 +17,7 @@
   <hr />
 
   <h3>Observaciones individuales</h3>
-  <table border="1">
+    <table border="1">
     <thead>
       <tr>
         <th>Estudiante</th>

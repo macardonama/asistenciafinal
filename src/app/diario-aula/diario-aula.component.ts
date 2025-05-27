@@ -23,15 +23,27 @@ export class DiarioAulaComponent implements OnInit {
   }
 
   cargarEstudiantes() {
-    this.http.get<any[]>('assets/estudiantes3.json').subscribe(data => {
-      this.estudiantes = data.map(e => ({
-        nombre_estudiante: e.name,
-        observacion: '',
-        enviar_a_padre: false
-      }));
-
-    });
+  let archivo = '';
+  switch (this.grupo) {
+    case '4-1':
+      archivo = 'estudiantes1.json'; break;
+    case '4-2':
+      archivo = 'estudiantes2.json'; break;
+    case '4-3':
+      archivo = 'estudiantes3.json'; break;
+    case '4-4':
+      archivo = 'estudiantes4.json'; break;
   }
+
+  this.http.get<any[]>(`assets/${archivo}`).subscribe(data => {
+    this.estudiantes = data.map(est => ({
+      ...est,
+      observacion: '',
+      enviar_a_padre: false
+    }));
+  });
+}
+
 
   guardar() {
   const observaciones_validas = this.estudiantes
