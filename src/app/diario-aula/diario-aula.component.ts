@@ -38,7 +38,11 @@ export class DiarioAulaComponent implements OnInit {
     grupo: this.grupo,
     fecha: this.fecha,
     observacion_general: this.observacionGeneral,
-    observaciones_individuales: this.estudiantes  // <--- usamos estudiantes
+    observaciones_individuales: this.estudiantes.map(est => ({
+      nombre_estudiante: est.nombre_estudiante,
+      observacion: est.observacion,
+      enviar_a_padre: est.enviar_a_padre
+    }))
   };
 
   this.http.post('https://asistencia-server.onrender.com/diario-aula', datos)
@@ -57,6 +61,7 @@ export class DiarioAulaComponent implements OnInit {
         alert('Error al guardar entrada');
       }
     });
-  }
+}
+
 
 }
