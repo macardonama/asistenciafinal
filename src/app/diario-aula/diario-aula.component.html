@@ -27,7 +27,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let estudiante of estudiantes; let i = index">
-        <td>{{ estudiante.nombre_estudiante }}</td>
+        <td>{{ estudiante.name }}</td>
         <td>
           <input type="text" [(ngModel)]="estudiante.observacion" name="obs{{ i }}">
         </td>
