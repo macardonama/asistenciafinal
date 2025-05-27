@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: true,
@@ -21,7 +22,7 @@ export class DiarioAulaComponent {
   };
 
   observaciones_individuales: any[] = [];
-
+constructor(private http: HttpClient) {}
   agregarObservacion() {
     if (this.nuevaObs.nombre_estudiante && this.nuevaObs.observacion) {
       this.observaciones_individuales.push({ ...this.nuevaObs });
@@ -38,13 +39,27 @@ export class DiarioAulaComponent {
   }
 
   guardar() {
-    // Lógica de envío POST al backend (a agregar más adelante)
-    console.log('Enviando datos:', {
-      grupo: this.grupo,
-      fecha: this.fecha,
-      observacion_general: this.observacionGeneral,
-      observaciones_individuales: this.observaciones_individuales
+  const datos = {
+    grupo: this.grupo,
+    fecha: this.fecha,
+    observacion_general: this.observacionGeneral,
+    observaciones_individuales: this.observaciones_individuales
+  };
+
+  this.http.post('https://asistencia-server.onrender.com/diario-aula', datos)
+    .subscribe({
+      next: res => {
+        console.log('✅ Enviado correctamente:', res);
+        alert('Entrada guardada exitosamente');
+        this.observacionGeneral = '';
+        this.observaciones_individuales = [];
+      },
+      error: err => {
+        console.error('❌ Error al enviar:', err);
+        alert('Error al guardar entrada');
+      }
     });
-  }
+}
+
 }
 

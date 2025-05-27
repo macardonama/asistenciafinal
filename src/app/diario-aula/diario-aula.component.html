@@ -1,1 +1,26 @@
-<p>diario-aula works!</p>
+<h2>Registrar entrada - Diario de Aula</h2>
+
+<form #formulario="ngForm" (ngSubmit)="guardarEntrada()">
+  <label>Grupo:</label>
+  <input type="text" name="grupo" [(ngModel)]="entrada.grupo" required>
+
+  <label>Fecha:</label>
+  <input type="date" name="fecha" [(ngModel)]="entrada.fecha" required>
+
+  <label>Observación general:</label>
+  <textarea name="observacion_general" [(ngModel)]="entrada.observacion_general" required></textarea>
+
+  <div *ngFor="let obs of entrada.observaciones_individuales; let i = index">
+    <h4>Observación {{ i + 1 }}</h4>
+    <label>Nombre estudiante:</label>
+    <input type="text" [(ngModel)]="obs.nombre_estudiante" name="nombre{{i}}" required>
+    <label>Observación:</label>
+    <input type="text" [(ngModel)]="obs.observacion" name="obs{{i}}" required>
+    <label>
+      <input type="checkbox" [(ngModel)]="obs.enviar_a_padre" name="padre{{i}}"> Enviar a padre
+    </label>
+  </div>
+
+  <button type="button" (click)="agregarObservacion()">+ Agregar observación</button>
+  <button type="submit">Guardar entrada</button>
+</form>
