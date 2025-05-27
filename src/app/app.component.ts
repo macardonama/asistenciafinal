@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { AttendanceComponent } from './attendance/attendance.component'; // 👈 Importa el componente
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AttendanceComponent], // 👈 Asegura que el componente esté aquí
-  template: `<app-attendance></app-attendance>` // 👈 Renderiza el componente
+  imports: [RouterOutlet],
+  template: `<router-outlet></router-outlet>`
 })
 export class AppComponent {}

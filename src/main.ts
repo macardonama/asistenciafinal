@@ -1,7 +1,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
-import { AttendanceComponent } from './app/attendance/attendance.component';
+import { provideRouter } from '@angular/router';
+import { routes } from './app/app.routes';
+import { AppComponent } from './app/app.component';
 
-bootstrapApplication(AttendanceComponent, {
-  providers: [provideHttpClient()]  // 🔹 Habilita HttpClient para la app
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient(),
+    provideRouter(routes)
+  ]
 }).catch(err => console.error(err));
