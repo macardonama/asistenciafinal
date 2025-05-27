@@ -44,7 +44,7 @@ export class DiarioAulaComponent implements OnInit {
       enviar_a_padre: est.enviar_a_padre
     }))
   };
-
+  console.log('Datos que se envían:', datos);
   this.http.post('https://asistencia-server.onrender.com/diario-aula', datos)
     .subscribe({
       next: res => {
