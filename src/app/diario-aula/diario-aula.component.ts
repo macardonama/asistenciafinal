@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -10,56 +10,45 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './diario-aula.component.html',
   styleUrl: './diario-aula.component.css'
 })
-export class DiarioAulaComponent {
+export class DiarioAulaComponent implements OnInit {
   grupo: string = '4-3';
   fecha: string = new Date().toISOString().substring(0, 10);
   observacionGeneral: string = '';
+  estudiantes: any[] = [];
 
-  nuevaObs: any = {
-    nombre_estudiante: '',
-    observacion: '',
-    enviar_a_padre: false
-  };
+  constructor(private http: HttpClient) {}
 
-  observaciones_individuales: any[] = [];
-constructor(private http: HttpClient) {}
-  agregarObservacion() {
-    if (this.nuevaObs.nombre_estudiante && this.nuevaObs.observacion) {
-      this.observaciones_individuales.push({ ...this.nuevaObs });
-      this.nuevaObs = {
-        nombre_estudiante: '',
-        observacion: '',
-        enviar_a_padre: false
-      };
-    }
+  ngOnInit() {
+    this.cargarEstudiantes();
   }
 
-  eliminarObservacion(index: number) {
-    this.observaciones_individuales.splice(index, 1);
+  cargarEstudiantes() {
+    this.http.get<any[]>('assets/estudiantes3.json').subscribe(data => {
+      this.estudiantes = data.map(nombre => ({
+        nombre_estudiante: nombre,
+        observacion: '',
+        enviar_a_padre: false
+      }));
+    });
   }
 
   guardar() {
-  const datos = {
-    grupo: this.grupo,
-    fecha: this.fecha,
-    observacion_general: this.observacionGeneral,
-    observaciones_individuales: this.observaciones_individuales
-  };
+    const datos = {
+      grupo: this.grupo,
+      fecha: this.fecha,
+      observacion_general: this.observacionGeneral,
+      observaciones_individuales: this.estudiantes
+    };
 
-  this.http.post('https://asistencia-server.onrender.com/diario-aula', datos)
-    .subscribe({
-      next: res => {
-        console.log('✅ Enviado correctamente:', res);
-        alert('Entrada guardada exitosamente');
-        this.observacionGeneral = '';
-        this.observaciones_individuales = [];
-      },
-      error: err => {
-        console.error('❌ Error al enviar:', err);
-        alert('Error al guardar entrada');
-      }
-    });
+    this.http.post('https://asistencia-server.onrender.com/diario-aula', datos)
+      .subscribe({
+        next: res => {
+          alert('✅ Entrada guardada exitosamente');
+        },
+        error: err => {
+          alert('❌ Error al guardar entrada');
+          console.error(err);
+        }
+      });
+  }
 }
-
-}
-

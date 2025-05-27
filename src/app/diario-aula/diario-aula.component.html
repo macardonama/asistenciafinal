@@ -1,38 +1,36 @@
-<h2>Diario de Aula</h2>
+<h2>Registro Diario de Aula - {{ grupo }}</h2>
 
-<form #formulario="ngForm" (ngSubmit)="guardar()">
-  <label for="grupo">Grupo:</label>
-  <input type="text" id="grupo" name="grupo" [(ngModel)]="grupo" required>
-
+<form (ngSubmit)="guardar()" #formulario="ngForm">
   <label for="fecha">Fecha:</label>
-  <input type="date" id="fecha" name="fecha" [(ngModel)]="fecha" required>
+  <input type="date" [(ngModel)]="fecha" name="fecha" required>
 
-  <label for="observacionGeneral">Observación General:</label>
-  <textarea id="observacionGeneral" name="observacionGeneral" [(ngModel)]="observacionGeneral"></textarea>
+  <label for="observacionGeneral">Observación general:</label>
+  <textarea [(ngModel)]="observacionGeneral" name="observacionGeneral"></textarea>
 
-  <hr>
+  <hr />
 
-  <h3>Observaciones Individuales</h3>
+  <h3>Observaciones individuales</h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Estudiante</th>
+        <th>Observación</th>
+        <th>Enviar a padre</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let estudiante of estudiantes; let i = index">
+        <td>{{ estudiante.nombre_estudiante }}</td>
+        <td>
+          <input type="text" [(ngModel)]="estudiante.observacion" name="obs{{ i }}">
+        </td>
+        <td>
+          <input type="checkbox" [(ngModel)]="estudiante.enviar_a_padre" name="padre{{ i }}">
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  <label for="nombre">Nombre del estudiante:</label>
-  <input type="text" id="nombre" name="nombre_estudiante" [(ngModel)]="nuevaObs.nombre_estudiante">
-
-  <label for="observacion">Observación:</label>
-  <input type="text" id="observacion" name="observacion" [(ngModel)]="nuevaObs.observacion">
-
-  <label>
-    <input type="checkbox" name="enviar_a_padre" [(ngModel)]="nuevaObs.enviar_a_padre">
-    Enviar a padre de familia
-  </label>
-
-  <button type="button" (click)="agregarObservacion()">Agregar observación</button>
-
-  <ul>
-    <li *ngFor="let obs of observaciones_individuales; let i = index">
-      {{ obs.nombre_estudiante }} - {{ obs.observacion }}
-      <button type="button" (click)="eliminarObservacion(i)">Eliminar</button>
-    </li>
-  </ul>
-
-  <button type="submit">Guardar todo</button>
+  <br />
+  <button type="submit">Guardar</button>
 </form>
