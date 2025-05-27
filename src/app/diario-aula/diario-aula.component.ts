@@ -49,7 +49,7 @@ export class DiarioAulaComponent implements OnInit {
   const observaciones_validas = this.estudiantes
     .filter(est => est.observacion.trim() !== '' || est.enviar_a_padre)
     .map(est => ({
-      nombre_estudiante: est.nombre_estudiante,
+      nombre_estudiante: est.name,
       observacion: est.observacion,
       enviar_a_padre: est.enviar_a_padre
     }));
