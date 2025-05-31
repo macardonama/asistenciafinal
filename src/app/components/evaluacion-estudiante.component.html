@@ -15,9 +15,14 @@
   <!-- Selección de estudiante -->
   <div *ngIf="estudiantes.length > 0">
     <h3>Selecciona tu nombre:</h3>
-    <button *ngFor="let nombre of estudiantes" (click)="seleccionarEstudiante(nombre)">
+    <ul class="lista-estudiantes">
+    <li *ngFor="let nombre of estudiantes">
+    <button (click)="seleccionarEstudiante(nombre)">
       {{ nombre }}
     </button>
+  </li>
+</ul>
+
   </div>
 </div>
 
