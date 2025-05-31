@@ -1,10 +1,25 @@
+<!-- Selección de grupo -->
 <div *ngIf="!nombreSeleccionado">
-  <h3>Selecciona tu nombre:</h3>
-  <button *ngFor="let nombre of estudiantes" (click)="seleccionarEstudiante(nombre)">
-    {{ nombre }}
-  </button>
+  <h3>Selecciona tu grupo:</h3>
+  <select [(ngModel)]="grupoSeleccionado" (change)="cargarEstudiantes()">
+  <option value="">-- Selecciona un grupo --</option>
+  <option value="4-1">4-1</option>
+  <option value="4-2">4-2</option>
+  <option value="4-3">4-3</option>
+  <option value="4-4">4-4</option>
+</select>
+
+
+  <!-- Selección de estudiante -->
+  <div *ngIf="estudiantes.length > 0">
+    <h3>Selecciona tu nombre:</h3>
+    <button *ngFor="let nombre of estudiantes" (click)="seleccionarEstudiante(nombre)">
+      {{ nombre }}
+    </button>
+  </div>
 </div>
 
+<!-- Pregunta y opciones -->
 <div *ngIf="nombreSeleccionado && pregunta">
   <h3>{{ pregunta.enunciado }}</h3>
   <div *ngFor="let opcion of pregunta.opciones">
@@ -13,8 +28,10 @@
       {{ opcion }}
     </label>
   </div>
+
   <button (click)="enviarRespuesta()">Enviar respuesta</button>
   <p *ngIf="resultado">{{ resultado }}</p>
 </div>
 
+<!-- Estado de carga -->
 <p *ngIf="cargando">Cargando pregunta...</p>

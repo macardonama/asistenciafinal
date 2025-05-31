@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule]
 })
 export class EvaluacionEstudianteComponent implements OnInit {
-  estudiantes = ['Ana', 'Brayan', 'Carlos', 'Daniela'];
+  estudiantes: string[] = [];
+  grupoSeleccionado: string = '';
   nombreSeleccionado: string = '';
   pregunta: any = null;
   respuestaSeleccionada: string = '';
@@ -22,6 +23,20 @@ export class EvaluacionEstudianteComponent implements OnInit {
 
   ngOnInit(): void {}
 
+ cargarEstudiantes() {
+  if (!this.grupoSeleccionado) return;
+
+  const grupoNumero = this.grupoSeleccionado.split('-')[1]; // "1", "2", etc.
+  const archivo = `/assets/estudiantes${grupoNumero}.json`;
+
+  this.http.get<{ name: string }[]>(archivo)
+    .subscribe(data => {
+      this.estudiantes = data.map(est => est.name);
+    });
+}
+
+
+  
   seleccionarEstudiante(nombre: string) {
     this.nombreSeleccionado = nombre;
     this.obtenerPregunta();
