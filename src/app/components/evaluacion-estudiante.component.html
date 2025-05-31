@@ -1,0 +1,20 @@
+<div *ngIf="!nombreSeleccionado">
+  <h3>Selecciona tu nombre:</h3>
+  <button *ngFor="let nombre of estudiantes" (click)="seleccionarEstudiante(nombre)">
+    {{ nombre }}
+  </button>
+</div>
+
+<div *ngIf="nombreSeleccionado && pregunta">
+  <h3>{{ pregunta.enunciado }}</h3>
+  <div *ngFor="let opcion of pregunta.opciones">
+    <label>
+      <input type="radio" name="respuesta" [value]="opcion" [(ngModel)]="respuestaSeleccionada">
+      {{ opcion }}
+    </label>
+  </div>
+  <button (click)="enviarRespuesta()">Enviar respuesta</button>
+  <p *ngIf="resultado">{{ resultado }}</p>
+</div>
+
+<p *ngIf="cargando">Cargando pregunta...</p>

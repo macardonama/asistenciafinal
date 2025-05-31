@@ -6,4 +6,8 @@ export const routes: Routes = [
   { path: '', redirectTo: 'attendance', pathMatch: 'full' },
   { path: 'attendance', component: AttendanceComponent },
   { path: 'diario-aula', component: DiarioAulaComponent },
+  {
+  path: 'evaluacion-estudiante',
+  loadComponent: () => import('./components/evaluacion-estudiante.component').then(m => m.EvaluacionEstudianteComponent)
+}
 ];
