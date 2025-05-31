@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-evaluacion-estudiante',
   templateUrl: './evaluacion-estudiante.component.html',
   styleUrl: './evaluacion-estudiante.component.css',
-  imports: []
+  imports: [CommonModule, FormsModule]
 })
 export class EvaluacionEstudianteComponent implements OnInit {
   estudiantes = ['Ana', 'Brayan', 'Carlos', 'Daniela'];
