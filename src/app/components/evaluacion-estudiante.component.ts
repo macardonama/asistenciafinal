@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule]
 })
 export class EvaluacionEstudianteComponent implements OnInit {
+  tiempoInicio: number = 0;
   estudiantes: string[] = [];
   grupoSeleccionado: string = '';
   nombreSeleccionado: string = '';
@@ -49,6 +50,7 @@ export class EvaluacionEstudianteComponent implements OnInit {
         next: (data) => {
           this.pregunta = data;
           this.cargando = false;
+          this.tiempoInicio = Date.now();
         },
         error: () => {
           this.resultado = 'Error al cargar la pregunta.';
@@ -58,13 +60,27 @@ export class EvaluacionEstudianteComponent implements OnInit {
   }
 
   enviarRespuesta() {
-    if (!this.pregunta || !this.respuestaSeleccionada) return;
+  if (!this.pregunta || !this.respuestaSeleccionada) return;
 
-    this.http.post('https://asistencia-server.onrender.com/api/evaluacion/respuesta', {
-      pregunta_id: this.pregunta._id,
-      respuesta: this.respuestaSeleccionada
-    }).subscribe((res: any) => {
-      this.resultado = res.correcta ? '¡Correcto! 🎉' : 'Incorrecto 😕';
+  const tiempo = Date.now() - this.tiempoInicio;
+
+  const datos = {
+    nombre_estudiante: this.nombreSeleccionado,
+    grupo: this.grupoSeleccionado,
+    pregunta_id: this.pregunta._id,
+    respuesta: this.respuestaSeleccionada,
+    tiempo
+  };
+
+  this.http.post<any>('https://asistencia-server.onrender.com/api/evaluacion/respuesta', datos)
+    .subscribe({
+      next: (res) => {
+        this.resultado = res.correcta ? `¡Correcto! 🎉 Puntaje: ${res.puntaje}` : `Incorrecto 😕 Puntaje: ${res.puntaje}`;
+      },
+      error: () => {
+        this.resultado = 'Error al enviar la respuesta.';
+      }
     });
-  }
+}
+
 }
