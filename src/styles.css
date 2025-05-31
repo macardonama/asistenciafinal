@@ -1,1 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background-color: #f7f9fb;
+  color: #333;
+}
+
+header {
+  background-color: #0d6efd;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+button {
+  background-color: #198754;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #146c43;
+}
+
+select, input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+h2, h3 {
+  color: #0d6efd;
+}
+
+.respuesta-correcta {
+  color: green;
+  font-weight: bold;
+}
+
+.respuesta-incorrecta {
+  color: crimson;
+  font-weight: bold;
+}

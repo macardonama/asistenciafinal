@@ -1,4 +1,6 @@
 <!-- Selección de grupo -->
+<header>EvalúApp Escolar</header>
+<div class="container">
 <div *ngIf="!nombreSeleccionado">
   <h3>Selecciona tu grupo:</h3>
   <select [(ngModel)]="grupoSeleccionado" (change)="cargarEstudiantes()">
@@ -35,3 +37,4 @@
 
 <!-- Estado de carga -->
 <p *ngIf="cargando">Cargando pregunta...</p>
+</div>
