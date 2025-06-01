@@ -88,6 +88,4 @@ reiniciarEvaluacion() {
   this.respuestaSeleccionada = '';
   this.resultado = '';
 }
-
-
 }
