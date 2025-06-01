@@ -1,7 +1,8 @@
 <!-- Selección de grupo -->
 <header>EvalúApp Escolar</header>
 <div class="container">
-<div *ngIf="!nombreSeleccionado">
+  <button routerLink="/" class="btn btn-outline-primary">🏠 Volver al inicio</button>
+  <div *ngIf="!nombreSeleccionado">
   <h3>Selecciona tu grupo:</h3>
   <select [(ngModel)]="grupoSeleccionado" (change)="cargarEstudiantes()">
   <option value="">-- Selecciona un grupo --</option>
@@ -38,6 +39,11 @@
 
   <button (click)="enviarRespuesta()">Enviar respuesta</button>
   <p *ngIf="resultado">{{ resultado }}</p>
+  <div *ngIf="resultado">
+  <p class="resultado">{{ resultado }}</p>
+  <button (click)="reiniciarEvaluacion()" class="btn btn-primary">🔁 Volver al listado</button>
+</div>
+
 </div>
 
 <!-- Estado de carga -->

@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { RouterModule } from '@angular/router';
 @Component({
   standalone: true,
   selector: 'app-evaluacion-estudiante',
   templateUrl: './evaluacion-estudiante.component.html',
   styleUrl: './evaluacion-estudiante.component.css',
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule,RouterModule]
 })
 export class EvaluacionEstudianteComponent implements OnInit {
   tiempoInicio: number = 0;
@@ -82,5 +82,12 @@ export class EvaluacionEstudianteComponent implements OnInit {
       }
     });
 }
+reiniciarEvaluacion() {
+  this.nombreSeleccionado = '';
+  this.pregunta = null;
+  this.respuestaSeleccionada = '';
+  this.resultado = '';
+}
+
 
 }
