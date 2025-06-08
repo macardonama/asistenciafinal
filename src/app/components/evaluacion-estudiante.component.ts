@@ -27,14 +27,13 @@ export class EvaluacionEstudianteComponent implements OnInit {
  cargarEstudiantes() {
   if (!this.grupoSeleccionado) return;
 
-  const grupoNumero = this.grupoSeleccionado.split('-')[1]; // "1", "2", etc.
-  const archivo = `/assets/estudiantes${grupoNumero}.json`;
-
-  this.http.get<{ name: string }[]>(archivo)
+  this.http.get<any[]>('https://asistencia-server.onrender.com/api/estudiantes')
     .subscribe(data => {
-      this.estudiantes = data.map(est => est.name);
+      const filtrados = data.filter(est => est.grupo === this.grupoSeleccionado);
+      this.estudiantes = filtrados.map(est => est.nombre_estudiante);
     });
 }
+
 
 
   
