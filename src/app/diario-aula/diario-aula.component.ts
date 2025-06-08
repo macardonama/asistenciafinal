@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { EstudiantesService } from '../services/estudiantes.service';
 
 @Component({
   standalone: true,
@@ -17,31 +18,24 @@ export class DiarioAulaComponent implements OnInit {
   observacionGeneral: string = '';
   estudiantes: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private estudiantesService: EstudiantesService
+  ) {}
 
   ngOnInit() {
     this.cargarEstudiantes();
   }
 
   cargarEstudiantes() {
-  let archivo = '';
-  switch (this.grupo) {
-    case '4-1':
-      archivo = 'estudiantes1.json'; break;
-    case '4-2':
-      archivo = 'estudiantes2.json'; break;
-    case '4-3':
-      archivo = 'estudiantes3.json'; break;
-    case '4-4':
-      archivo = 'estudiantes4.json'; break;
-  }
-
-  this.http.get<any[]>(`assets/${archivo}`).subscribe(data => {
-    this.estudiantes = data.map(est => ({
-      ...est,
-      observacion: '',
-      enviar_a_padre: false
-    }));
+  this.estudiantesService.obtenerEstudiantes().subscribe(data => {
+    this.estudiantes = data
+      .filter(est => est.grupo === this.grupo)
+      .map(est => ({
+        name: est.nombre_estudiante,
+        observacion: '',
+        enviar_a_padre: false
+      }));
   });
 }
 
