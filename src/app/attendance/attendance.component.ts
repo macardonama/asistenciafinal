@@ -33,36 +33,43 @@ export class AttendanceComponent implements OnInit {
   }
 
   cargarAsistencia() {
-    this.students = [];
+  this.students = [];
 
+  // Paso 1: Obtener la lista oficial de estudiantes desde acudientes
+  this.estudiantesService.obtenerEstudiantes().subscribe(estudiantes => {
+    const estudiantesDelGrupo = estudiantes.filter(e => e.grupo === this.grupoSeleccionado);
+
+    // Paso 2: Obtener asistencia (por si ya existe) y emparejarla con los estudiantes válidos
     this.http.get<any[]>('https://asistencia-server.onrender.com/obtenerAsistencia')
-      .subscribe(data => {
-        const asistenciaGrupo = data.filter(s => s.grupo === this.grupoSeleccionado);
+      .subscribe(asistencias => {
+        const asistenciaDelGrupo = asistencias.filter(a => a.grupo === this.grupoSeleccionado);
+        const asistenciaMap = new Map(asistenciaDelGrupo.map(a => [a.name, a]));
 
-        if (asistenciaGrupo.length > 0) {
-          const nombresUnicos = new Set();
-          this.students = asistenciaGrupo.filter(s => {
-            if (nombresUnicos.has(s.name)) return false;
-            nombresUnicos.add(s.name);
-            return true;
-          });
-        } else {
-          this.estudiantesService.obtenerEstudiantes().subscribe(estudiantes => {
-            const filtrados = estudiantes.filter(e => e.grupo === this.grupoSeleccionado);
-            this.students = filtrados.map(est => ({
-              name: est.nombre_estudiante,
-              estado: '',
-              emoji: '',
-              grupo: est.grupo
-            }));
-          }, error => {
-            console.error('Error al obtener estudiantes desde API:', error);
-          });
-        }
+        // Paso 3: Crear la lista final solo con estudiantes que están en acudientes
+        this.students = estudiantesDelGrupo.map(est => {
+          const asistencia = asistenciaMap.get(est.nombre_estudiante);
+          return {
+            name: est.nombre_estudiante,
+            grupo: est.grupo,
+            estado: asistencia?.estado || '',
+            emoji: asistencia?.emoji || ''
+          };
+        });
       }, error => {
-        console.error('Error al obtener la asistencia:', error);
+        console.error('Error al obtener asistencia:', error);
+        // Si no hay asistencia, simplemente cargamos los estudiantes vacíos
+        this.students = estudiantesDelGrupo.map(est => ({
+          name: est.nombre_estudiante,
+          grupo: est.grupo,
+          estado: '',
+          emoji: ''
+        }));
       });
-  }
+  }, error => {
+    console.error('Error al obtener estudiantes desde API:', error);
+  });
+}
+
 
   assignEmoji(student: any, emoji: string) {
     student.emoji = emoji;
