@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { EstudiantesService, Estudiante } from '../services/estudiantes.service';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,14 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./attendance.component.css']
 })
 export class AttendanceComponent implements OnInit {
-  grupoSeleccionado = '4-1'; // Grupo por defecto
+  grupoSeleccionado = '4-1';
   students: any[] = [];
-  emojis = ['😊', '😐', '😢', '😡', '😴', '😃', '😬', '🤒'];  // 🔄 NUEVAS EMOCIONES
+  emojis = ['😊', '😐', '😢', '😡', '😴', '😃', '😬', '🤒'];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private estudiantesService: EstudiantesService
+  ) {}
 
   ngOnInit() {
     const savedData = localStorage.getItem('asistenciaData');
@@ -30,35 +34,29 @@ export class AttendanceComponent implements OnInit {
 
   cargarAsistencia() {
     this.students = [];
+
     this.http.get<any[]>('https://asistencia-server.onrender.com/obtenerAsistencia')
       .subscribe(data => {
-        if (data.length && data[0].grupo === this.grupoSeleccionado) {
-          const estudiantesGrupo = data.filter(s => s.grupo === this.grupoSeleccionado);
-          // Eliminar duplicados por nombre (solo deja el primero que encuentra)
+        const asistenciaGrupo = data.filter(s => s.grupo === this.grupoSeleccionado);
+
+        if (asistenciaGrupo.length > 0) {
           const nombresUnicos = new Set();
-          this.students = estudiantesGrupo.filter(s => {
+          this.students = asistenciaGrupo.filter(s => {
             if (nombresUnicos.has(s.name)) return false;
             nombresUnicos.add(s.name);
             return true;
           });
         } else {
-          const archivo = {
-            '4-1': '/assets/estudiantes1.json',
-            '4-2': '/assets/estudiantes2.json',
-            '4-3': '/assets/estudiantes3.json',
-            '4-4': '/assets/estudiantes4.json'
-          }[this.grupoSeleccionado];
-          if (!archivo) {
-            console.error('Grupo no válido:', this.grupoSeleccionado);
-            return;
-          }
-          this.http.get<{ name: string }[]>(archivo).subscribe(jsonData => {
-            this.students = jsonData.map(student => ({
-              ...student,
+          this.estudiantesService.obtenerEstudiantes().subscribe(estudiantes => {
+            const filtrados = estudiantes.filter(e => e.grupo === this.grupoSeleccionado);
+            this.students = filtrados.map(est => ({
+              name: est.nombre_estudiante,
               estado: '',
               emoji: '',
-              grupo: this.grupoSeleccionado
+              grupo: est.grupo
             }));
+          }, error => {
+            console.error('Error al obtener estudiantes desde API:', error);
           });
         }
       }, error => {
@@ -68,7 +66,7 @@ export class AttendanceComponent implements OnInit {
 
   assignEmoji(student: any, emoji: string) {
     student.emoji = emoji;
-    localStorage.setItem('asistenciaData', JSON.stringify(this.students));  // 💾 Guarda el progreso
+    localStorage.setItem('asistenciaData', JSON.stringify(this.students));
   }
 
   guardarAsistencia() {
@@ -87,13 +85,11 @@ export class AttendanceComponent implements OnInit {
       return;
     }
 
-    console.log('Enviando asistencia:', datosLimpios);
-
     this.http.post('https://asistencia-server.onrender.com/guardarAsistencia', datosLimpios)
       .subscribe(
         () => {
           alert('Asistencia guardada exitosamente');
-          localStorage.removeItem('asistenciaData');  // 🧹 Limpia el guardado
+          localStorage.removeItem('asistenciaData');
         },
         (error) => {
           console.error('Error al guardar la asistencia:', error);
