@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-mesas-vidas',
   standalone: true,
+   imports: [CommonModule],
   templateUrl: './mesas-vidas.component.html',
   styleUrls: ['./mesas-vidas.component.css']
 })
