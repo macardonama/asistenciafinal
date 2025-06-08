@@ -1,0 +1,20 @@
+<header>Mesas y Vidas</header>
+<div class="container">
+  <button routerLink="/" class="btn btn-outline-primary">🏠 Volver al inicio</button>
+  <button (click)="resetear()">🩺 Recargar vidas a todas</button>
+
+  <div class="grid">
+    <div *ngFor="let mesa of mesas" class="mesa">
+      <p><strong>Mesa {{ mesa.numero }}</strong></p>
+
+      <div (click)="perderVida(mesa)">
+        <p *ngIf="mesa.vidas > 0">
+          <span *ngFor="let v of [].constructor(mesa.vidas)">💖</span>
+        </p>
+        <p *ngIf="mesa.vidas === 0">💀</p>
+      </div>
+
+      <button (click)="recargarUna(mesa)">🔄 Recargar</button>
+    </div>
+  </div>
+</div>
