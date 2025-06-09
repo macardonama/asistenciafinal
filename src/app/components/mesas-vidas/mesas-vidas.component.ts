@@ -42,9 +42,11 @@ inicializarMesas() {
   }
 
   recargarUna(mesa: any) {
-    mesa.vidas = 5;
+  if (mesa.vidas < 5) {
+    mesa.vidas++;
     this.guardarEstado();
   }
+}
 
   resetear() {
     this.mesas.forEach(m => m.vidas = 5);

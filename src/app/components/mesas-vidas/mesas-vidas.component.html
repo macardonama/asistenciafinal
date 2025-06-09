@@ -2,8 +2,7 @@
 <div class="container">
   <button routerLink="/" class="btn btn-outline-primary">🏠 Volver al inicio</button>
   <button (click)="resetear()">🩺 Recargar vidas a todas</button>
-    <p>Mesas cargadas: {{ mesas.length }}</p>
-    <pre>{{ mesas | json }}</pre>
+    
 
   <div class="grid">
     <div *ngFor="let mesa of mesas" class="mesa">
