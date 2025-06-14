@@ -23,12 +23,12 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
   cargarAsistencias() {
     this.asistenciaSub = this.asistenciaService.getTodasAsistencias().subscribe({
       next: data => {
-        this.asistencias = data;
+        this.asistencias = data ?? []; // Protegemos contra null
         this.calcularResumen();
       },
       error: err => {
         console.error('Error al obtener asistencias:', err);
-        this.asistencias = []; // Protege el template
+        this.asistencias = [];
         this.resumen = {};
       }
     });

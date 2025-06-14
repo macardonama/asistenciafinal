@@ -1,12 +1,22 @@
-<h2>Dashboard Asistencia Escolar</h2>
+<div *ngIf="asistencias?.length > 0; else noData">
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Nombre</th>
+        <th>Emoción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let asistencia of asistencias">
+        <td>{{ asistencia.fecha }}</td>
+        <td>{{ asistencia.nombre }}</td>
+        <td>{{ asistencia.emocion }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-<table>
-  <tr>
-    <th>Emoción</th>
-    <th>Cantidad</th>
-  </tr>
-  <tr *ngFor="let emocion of resumen | keyvalue">
-    <td>{{ emocion.key }}</td>
-    <td>{{ emocion.value }}</td>
-  </tr>
-</table>
+<ng-template #noData>
+  <p>No hay datos disponibles.</p>
+</ng-template>
