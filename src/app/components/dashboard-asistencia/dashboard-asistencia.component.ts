@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AsistenciaService } from '../../services/asistencia.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-asistencia',
@@ -7,10 +8,11 @@ import { AsistenciaService } from '../../services/asistencia.service';
   templateUrl: './dashboard-asistencia.component.html',
   styleUrls: ['./dashboard-asistencia.component.css']
 })
-export class DashboardAsistenciaComponent implements OnInit {
+export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
 
   asistencias: any[] = [];
   resumen: any = {};
+  asistenciaSub: Subscription | undefined;
 
   constructor(private asistenciaService: AsistenciaService) {}
 
@@ -19,9 +21,16 @@ export class DashboardAsistenciaComponent implements OnInit {
   }
 
   cargarAsistencias() {
-    this.asistenciaService.getTodasAsistencias().subscribe(data => {
-      this.asistencias = data;
-      this.calcularResumen();
+    this.asistenciaSub = this.asistenciaService.getTodasAsistencias().subscribe({
+      next: data => {
+        this.asistencias = data;
+        this.calcularResumen();
+      },
+      error: err => {
+        console.error('Error al obtener asistencias:', err);
+        this.asistencias = []; // Protege el template
+        this.resumen = {};
+      }
     });
   }
 
@@ -32,5 +41,11 @@ export class DashboardAsistenciaComponent implements OnInit {
       resumenEmociones[emocion] = (resumenEmociones[emocion] || 0) + 1;
     }
     this.resumen = resumenEmociones;
+  }
+
+  ngOnDestroy(): void {
+    if (this.asistenciaSub) {
+      this.asistenciaSub.unsubscribe();
+    }
   }
 }
