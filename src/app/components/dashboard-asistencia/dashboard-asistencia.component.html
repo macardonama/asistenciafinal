@@ -1,0 +1,12 @@
+<h2>Dashboard Asistencia Escolar</h2>
+
+<table>
+  <tr>
+    <th>Emoción</th>
+    <th>Cantidad</th>
+  </tr>
+  <tr *ngFor="let emocion of resumen | keyvalue">
+    <td>{{ emocion.key }}</td>
+    <td>{{ emocion.value }}</td>
+  </tr>
+</table>

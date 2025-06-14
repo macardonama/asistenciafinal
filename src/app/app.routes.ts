@@ -22,5 +22,13 @@ export const routes: Routes = [
   path: 'mesas',
   loadComponent: () =>
     import('./components/mesas-vidas/mesas-vidas.component').then(m => m.MesasVidasComponent)
-  }
+  },
+  {
+  path: 'dashboard-asistencia',
+  loadComponent: () =>
+    import('./components/dashboard-asistencia/dashboard-asistencia.component').then(
+      (m) => m.DashboardAsistenciaComponent
+    )
+}
+
 ];
