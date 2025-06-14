@@ -1,12 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AsistenciaService } from '../../services/asistencia.service';
 import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-asistencia',
   standalone: true,
   templateUrl: './dashboard-asistencia.component.html',
-  styleUrls: ['./dashboard-asistencia.component.css']
+  styleUrls: ['./dashboard-asistencia.component.css'],
+  imports: [CommonModule, FormsModule,RouterModule]
+
 })
 export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
 
