@@ -21,18 +21,19 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
   }
 
   cargarAsistencias() {
-    this.asistenciaSub = this.asistenciaService.getTodasAsistencias().subscribe({
-      next: data => {
-        this.asistencias = data ?? []; // Protegemos contra null
-        this.calcularResumen();
-      },
-      error: err => {
-        console.error('Error al obtener asistencias:', err);
-        this.asistencias = [];
-        this.resumen = {};
-      }
-    });
-  }
+  this.asistenciaSub = this.asistenciaService.getTodasAsistencias().subscribe({
+    next: data => {
+      console.log('Datos recibidos:', data);
+      this.asistencias = data ?? []; 
+      this.calcularResumen();
+    },
+    error: err => {
+      console.error('Error al obtener asistencias:', err);
+      this.asistencias = [];
+      this.resumen = {};
+    }
+  });
+}
 
   calcularResumen() {
     const resumenEmociones: any = {};
