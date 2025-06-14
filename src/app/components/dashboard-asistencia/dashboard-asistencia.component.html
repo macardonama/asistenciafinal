@@ -5,13 +5,17 @@
         <th>Fecha</th>
         <th>Nombre</th>
         <th>Emoción</th>
+        <th>Estado</th>
+        <th>Grupo</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let asistencia of asistencias">
-        <td>{{ asistencia.fecha }}</td>
-        <td>{{ asistencia.nombre }}</td>
-        <td>{{ asistencia.emocion }}</td>
+        <td>{{ asistencia.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+        <td>{{ asistencia.name }}</td>
+        <td>{{ asistencia.emoji }}</td>
+        <td>{{ asistencia.estado }}</td>
+        <td>{{ asistencia.grupo }}</td>
       </tr>
     </tbody>
   </table>
