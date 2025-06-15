@@ -3,6 +3,8 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
+
 
 @Injectable({
   providedIn: 'root'
