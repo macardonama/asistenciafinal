@@ -4,13 +4,18 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import {
+  ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle,
+  ApexNonAxisChartSeries, ApexResponsive, ApexLegend, ApexFill
+} from 'ng-apexcharts';
 
 @Component({
   selector: 'app-dashboard-asistencia',
   standalone: true,
   templateUrl: './dashboard-asistencia.component.html',
   styleUrls: ['./dashboard-asistencia.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule]
+  imports: [CommonModule, FormsModule, RouterModule, NgApexchartsModule]
 })
 export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
 
@@ -33,6 +38,11 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
   porcentajeAsistencia = 0;
   emocionDominante = '';
   resumenEmociones: { [key: string]: number } = {};
+
+  // Gráficos
+  public lineChartOptions: Partial<any> | any;
+  public barChartOptions: Partial<any> | any;
+  public pieChartOptions: Partial<any> | any;
 
   // Emojis oficiales
   emojisValidos: string[] = ["🙂", "😐", "😢", "😡", "😴", "😃", "😬", "🤒"];
@@ -110,6 +120,63 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
 
     const maxEmocion = Object.entries(emociones).reduce((max, current) => current[1] > max[1] ? current : max, ['', 0]);
     this.emocionDominante = maxEmocion[0] ?? '';
+
+    this.generarGraficos();
+  }
+
+  generarGraficos() {
+    // Gráfico de evolución temporal (línea)
+    const fechas = [...new Set(this.asistenciasFiltradas.map(a => a.createdAt.substring(0, 10)))].sort();
+    const seriesAsistencia = fechas.map(fecha => {
+      const registrosDia = this.asistenciasFiltradas.filter(a => a.createdAt.startsWith(fecha));
+      const presentes = registrosDia.filter(a => a.estado === 'Presente').length;
+      const porcentaje = registrosDia.length > 0 ? (presentes / registrosDia.length) * 100 : 0;
+      return porcentaje;
+    });
+
+    this.lineChartOptions = {
+      series: [{ name: "Asistencia (%)", data: seriesAsistencia }],
+      chart: { type: "line", height: 300 },
+      xaxis: { categories: fechas },
+      title: { text: "Evolución temporal de asistencia" }
+    };
+
+    // Gráfico de emociones por día (barras apiladas)
+    const emocionesPorDia: { [key: string]: { [key: string]: number } } = {};
+    fechas.forEach(fecha => {
+      emocionesPorDia[fecha] = {};
+      this.emojisValidos.forEach(e => emocionesPorDia[fecha][e] = 0);
+    });
+
+    this.asistenciasFiltradas.forEach(a => {
+      const fecha = a.createdAt.substring(0, 10);
+      const emocion = a.emoji || 'Sin dato';
+      if (emocionesPorDia[fecha][emocion] !== undefined) {
+        emocionesPorDia[fecha][emocion]++;
+      }
+    });
+
+    const seriesBarras = this.emojisValidos.map(emoji => {
+      return {
+        name: emoji,
+        data: fechas.map(f => emocionesPorDia[f][emoji])
+      };
+    });
+
+    this.barChartOptions = {
+      series: seriesBarras,
+      chart: { type: "bar", stacked: true, height: 300 },
+      xaxis: { categories: fechas },
+      title: { text: "Emociones por día" }
+    };
+
+    // Gráfico de pastel
+    this.pieChartOptions = {
+      series: [this.totalPresentes, this.totalAusentes],
+      chart: { type: "pie", height: 300 },
+      labels: ["Presente", "Ausente"],
+      responsive: [{ breakpoint: 480, options: { chart: { width: 200 }, legend: { position: "bottom" } } }]
+    };
   }
 
   ngOnDestroy(): void {

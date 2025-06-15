@@ -36,6 +36,30 @@
   <div class="card">Emoción dominante: {{ emocionDominante }}</div>
 </div>
 
+<!-- GRÁFICOS -->
+<div class="graficos">
+  <apx-chart *ngIf="lineChartOptions"
+    [series]="lineChartOptions.series"
+    [chart]="lineChartOptions.chart"
+    [xaxis]="lineChartOptions.xaxis"
+    [title]="lineChartOptions.title">
+  </apx-chart>
+
+  <apx-chart *ngIf="barChartOptions"
+    [series]="barChartOptions.series"
+    [chart]="barChartOptions.chart"
+    [xaxis]="barChartOptions.xaxis"
+    [title]="barChartOptions.title">
+  </apx-chart>
+
+  <apx-chart *ngIf="pieChartOptions"
+    [series]="pieChartOptions.series"
+    [chart]="pieChartOptions.chart"
+    [labels]="pieChartOptions.labels"
+    [responsive]="pieChartOptions.responsive">
+  </apx-chart>
+</div>
+
 <!-- TABLA -->
 <h2>Tabla de registros</h2>
 <div *ngIf="asistenciasFiltradas.length > 0; else noData">
