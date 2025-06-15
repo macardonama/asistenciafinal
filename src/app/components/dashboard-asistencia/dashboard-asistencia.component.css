@@ -1,42 +1,17 @@
-.filtros {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.resumen-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.card {
-  background-color: #e0f7fa;
-  padding: 1rem;
-  border-radius: 8px;
-  font-weight: bold;
-  min-width: 150px;
-  text-align: center;
-}
-
 .graficos {
   display: flex;
-  gap: 2rem;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 0.5rem;
-  text-align: center;
+.graficos apx-chart {
+  flex: 1 1 350px;
+  max-width: 450px;
+  min-width: 320px;
+  background: #f7f7f7;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
