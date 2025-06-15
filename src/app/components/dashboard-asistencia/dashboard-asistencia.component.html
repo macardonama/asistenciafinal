@@ -1,4 +1,62 @@
-<div *ngIf="asistencias && asistencias.length > 0; else noData">
+<h1>Dashboard de Asistencia</h1>
+
+<!-- FILTROS -->
+<div class="filtros">
+  <label>Fecha inicio:</label>
+  <input type="date" [(ngModel)]="fechaInicio" (change)="filtrarDatos()">
+
+  <label>Fecha fin:</label>
+  <input type="date" [(ngModel)]="fechaFin" (change)="filtrarDatos()">
+
+  <label>Grupo:</label>
+  <select [(ngModel)]="grupoSeleccionado" (change)="filtrarDatos()">
+    <option value="Todos">Todos</option>
+    <option *ngFor="let grupo of gruposDisponibles" [value]="grupo">{{ grupo }}</option>
+  </select>
+
+  <label>Estado:</label>
+  <select [(ngModel)]="estadoSeleccionado" (change)="filtrarDatos()">
+    <option value="Todos">Todos</option>
+    <option value="Presente">Presente</option>
+    <option value="Ausente">Ausente</option>
+  </select>
+</div>
+
+<!-- KPIs -->
+<div class="resumen-cards">
+  <div class="card">Total registros: {{ totalRegistros }}</div>
+  <div class="card">Presentes: {{ totalPresentes }}</div>
+  <div class="card">Ausentes: {{ totalAusentes }}</div>
+  <div class="card">Asistencia: {{ porcentajeAsistencia | number:'1.0-2' }}%</div>
+  <div class="card">Emoción dominante: {{ emocionDominante }}</div>
+</div>
+
+<!-- GRAFICOS -->
+<div class="graficos">
+  <div id="barras">
+    <apx-chart
+      *ngIf="barChartOptions"
+      [series]="barChartOptions.series"
+      [chart]="barChartOptions.chart"
+      [xaxis]="barChartOptions.xaxis"
+      [title]="barChartOptions.title">
+    </apx-chart>
+  </div>
+
+  <div id="pastel">
+    <apx-chart
+      *ngIf="pieChartOptions"
+      [series]="pieChartOptions.series"
+      [chart]="pieChartOptions.chart"
+      [labels]="pieChartOptions.labels"
+      [responsive]="pieChartOptions.responsive">
+    </apx-chart>
+  </div>
+</div>
+
+<!-- TABLA DE REGISTROS -->
+<h2>Tabla de registros</h2>
+<div *ngIf="asistenciasFiltradas && asistenciasFiltradas.length > 0; else noData">
   <table>
     <thead>
       <tr>
@@ -10,7 +68,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let asistencia of asistencias">
+      <tr *ngFor="let asistencia of asistenciasFiltradas">
         <td>{{ asistencia.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
         <td>{{ asistencia.name }}</td>
         <td>{{ asistencia.emoji }}</td>
