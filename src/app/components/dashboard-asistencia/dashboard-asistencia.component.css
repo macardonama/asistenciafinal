@@ -35,3 +35,22 @@ button {
 button:hover {
   background: #0056b3;
 }
+
+.alertas-container {
+  background: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-bottom: 15px;
+  color: #856404;
+}
+
+.alerta-grupo {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.alerta-estudiantes ul {
+  margin: 0;
+  padding-left: 20px;
+}

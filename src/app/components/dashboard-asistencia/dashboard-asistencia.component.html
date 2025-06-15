@@ -40,6 +40,18 @@
   <button (click)="exportarPDFPorEstudiante(estudianteSeleccionado.value)">Exportar PDF</button>
 </div>
 
+<div *ngIf="alertasEstudiantes.length > 0 || alertaGrupo" class="alertas-container">
+  <div *ngIf="alertaGrupo" class="alerta-grupo">
+    {{ alertaGrupo }}
+  </div>
+
+  <div *ngIf="alertasEstudiantes.length > 0" class="alerta-estudiantes">
+    <p><b>Estudiantes con muchas ausencias:</b></p>
+    <ul>
+      <li *ngFor="let alerta of alertasEstudiantes">{{ alerta }}</li>
+    </ul>
+  </div>
+</div>
 
 <!-- KPI -->
 <div class="resumen-cards">

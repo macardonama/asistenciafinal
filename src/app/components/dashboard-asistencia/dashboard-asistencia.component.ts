@@ -20,6 +20,13 @@ import { ExportacionService } from '../../services/exportacion.service';
 })
 export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
 
+  alertasEstudiantes: string[] = [];
+  alertaGrupo: string | null = null;
+
+  // Límites configurables:
+  limiteAusenciasEstudiante = 3;  // Cantidad de ausencias por estudiante
+  limiteAsistenciaGrupo = 80;     // Porcentaje mínimo esperado de asistencia
+
   asistencias: any[] = [];
   asistenciasFiltradas: any[] = [];
   asistenciaSub: Subscription | undefined;
@@ -67,6 +74,27 @@ constructor(private asistenciaService: AsistenciaService, private exportService:
       }
     });
   }
+  generarAlertas() {
+  // Calcula las ausencias por estudiante
+  const ausenciasPorEstudiante: { [key: string]: number } = {};
+
+  this.asistenciasFiltradas.forEach(a => {
+    if (a.estado === 'Ausente') {
+      ausenciasPorEstudiante[a.name] = (ausenciasPorEstudiante[a.name] || 0) + 1;
+    }
+  });
+
+  this.alertasEstudiantes = Object.entries(ausenciasPorEstudiante)
+    .filter(([_, count]) => count >= this.limiteAusenciasEstudiante)
+    .map(([name, count]) => `${name}: ${count} ausencias`);
+
+  // Calcula la alerta grupal
+  if (this.porcentajeAsistencia < this.limiteAsistenciaGrupo) {
+    this.alertaGrupo = `⚠ El grupo tiene solo ${this.porcentajeAsistencia.toFixed(1)}% de asistencia`;
+  } else {
+    this.alertaGrupo = null;
+  }
+}
 
   filtrarDatos() {
     let data = [...this.asistencias];
@@ -98,6 +126,9 @@ constructor(private asistenciaService: AsistenciaService, private exportService:
 
     this.asistenciasFiltradas = data;
     this.calcularResumen();
+    this.calcularResumen();
+    this.generarAlertas();
+
   }
 
   obtenerDiaSemana(fecha: Date): string {
