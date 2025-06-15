@@ -20,18 +20,29 @@ export class ExportacionService {
     saveAs(blob, `${nombreArchivo}.xlsx`);
   }
 
-  exportarPDFIndividual(datos: any[], estudiante: string, rangoFechas: string) {
+ exportarPDFIndividual(datos: any[], estudiante: string, rangoFechas: string) {
   const doc = new jsPDF();
   doc.setFontSize(16);
   doc.text(`Reporte de Asistencia - ${estudiante}`, 10, 20);
   doc.setFontSize(12);
   doc.text(`Rango de fechas: ${rangoFechas}`, 10, 30);
 
+  const mapEmojis: any = {
+    "🙂": "Feliz",
+    "😐": "Neutral",
+    "😢": "Triste",
+    "😡": "Enojado",
+    "😴": "Dormido",
+    "😃": "Muy feliz",
+    "😬": "Tenso",
+    "🤒": "Enfermo"
+  };
+
   const columnas = ["Fecha", "Estado", "Emoción"];
   const filas = datos.map(a => [
     a.createdAt.substring(0, 10),
     a.estado,
-    a.emoji
+    mapEmojis[a.emoji] ?? 'Sin dato'
   ]);
 
   autoTable(doc, {
@@ -42,6 +53,7 @@ export class ExportacionService {
 
   doc.save(`asistencia_${estudiante}.pdf`);
 }
+
 
 
   exportarVistaComoPDF(elementId: string, nombreArchivo: string) {
