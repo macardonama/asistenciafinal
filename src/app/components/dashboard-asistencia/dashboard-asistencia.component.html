@@ -26,6 +26,19 @@
     <option *ngFor="let dia of diasDisponibles" [value]="dia">{{ dia }}</option>
   </select>
 </div>
+<div class="exportaciones">
+  <button (click)="exportarExcel()">Exportar Excel (Filtrado)</button>
+  <button (click)="exportarPDFVista()">Exportar PDF Completo</button>
+</div>
+
+<div class="exportaciones">
+  <label>Exportar PDF individual:</label>
+  <select #estudianteSeleccionado>
+    <option *ngFor="let estudiante of asistenciasFiltradas" [value]="estudiante.name">{{ estudiante.name }}</option>
+  </select>
+  <button (click)="exportarPDFPorEstudiante(estudianteSeleccionado.value)">Exportar PDF</button>
+</div>
+
 
 <!-- KPI -->
 <div class="resumen-cards">

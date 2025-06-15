@@ -9,6 +9,7 @@ import {
   ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle,
   ApexNonAxisChartSeries, ApexResponsive, ApexLegend, ApexFill
 } from 'ng-apexcharts';
+import { ExportacionService } from '../../services/exportacion.service';
 
 @Component({
   selector: 'app-dashboard-asistencia',
@@ -47,7 +48,7 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
   // Emojis oficiales
   emojisValidos: string[] = ["🙂", "😐", "😢", "😡", "😴", "😃", "😬", "🤒"];
 
-  constructor(private asistenciaService: AsistenciaService) {}
+constructor(private asistenciaService: AsistenciaService, private exportService: ExportacionService) {}
 
   ngOnInit(): void {
     this.cargarAsistencias();
@@ -178,6 +179,20 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
       responsive: [{ breakpoint: 480, options: { chart: { width: 200 }, legend: { position: "bottom" } } }]
     };
   }
+  exportarExcel() {
+  this.exportService.exportarExcel(this.asistenciasFiltradas, 'asistencia_filtrada');
+  }
+
+  exportarPDFVista() {
+  this.exportService.exportarVistaComoPDF('dashboard', 'dashboard_completo');
+  }
+
+  exportarPDFPorEstudiante(nombre: string) {
+  const datosEstudiante = this.asistenciasFiltradas.filter(a => a.name === nombre);
+  const rango = `${this.fechaInicio} - ${this.fechaFin}`;
+  this.exportService.exportarPDFIndividual(datosEstudiante, nombre, rango);
+  }
+
 
   ngOnDestroy(): void {
     if (this.asistenciaSub) {
