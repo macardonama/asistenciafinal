@@ -20,9 +20,14 @@
     <option value="Presente">Presente</option>
     <option value="Ausente">Ausente</option>
   </select>
+
+  <label>Día semana:</label>
+  <select [(ngModel)]="diaSeleccionado" (change)="filtrarDatos()">
+    <option *ngFor="let dia of diasDisponibles" [value]="dia">{{ dia }}</option>
+  </select>
 </div>
 
-<!-- KPIs -->
+<!-- KPI -->
 <div class="resumen-cards">
   <div class="card">Total registros: {{ totalRegistros }}</div>
   <div class="card">Presentes: {{ totalPresentes }}</div>
@@ -31,38 +36,15 @@
   <div class="card">Emoción dominante: {{ emocionDominante }}</div>
 </div>
 
-<!-- GRAFICOS -->
-<div class="graficos">
-  <div id="barras">
-    <apx-chart
-      *ngIf="barChartOptions"
-      [series]="barChartOptions.series"
-      [chart]="barChartOptions.chart"
-      [xaxis]="barChartOptions.xaxis"
-      [title]="barChartOptions.title">
-    </apx-chart>
-  </div>
-
-  <div id="pastel">
-    <apx-chart
-      *ngIf="pieChartOptions"
-      [series]="pieChartOptions.series"
-      [chart]="pieChartOptions.chart"
-      [labels]="pieChartOptions.labels"
-      [responsive]="pieChartOptions.responsive">
-    </apx-chart>
-  </div>
-</div>
-
-<!-- TABLA DE REGISTROS -->
+<!-- TABLA -->
 <h2>Tabla de registros</h2>
-<div *ngIf="asistenciasFiltradas && asistenciasFiltradas.length > 0; else noData">
+<div *ngIf="asistenciasFiltradas.length > 0; else noData">
   <table>
     <thead>
       <tr>
         <th>Fecha</th>
         <th>Nombre</th>
-        <th>Emoción</th>
+        <th>Emoji</th>
         <th>Estado</th>
         <th>Grupo</th>
       </tr>

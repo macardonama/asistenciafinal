@@ -4,30 +4,13 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle, ApexNonAxisChartSeries, ApexResponsive, ApexLegend } from 'ng-apexcharts';
-
-export interface ChartOptions {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  title: ApexTitleSubtitle;
-}
-
-export interface PieChartOptions {
-  series: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  labels: string[];
-  responsive: ApexResponsive[];
-  legend: ApexLegend;
-}
 
 @Component({
   selector: 'app-dashboard-asistencia',
   standalone: true,
   templateUrl: './dashboard-asistencia.component.html',
   styleUrls: ['./dashboard-asistencia.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule, NgApexchartsModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
 
@@ -39,20 +22,20 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
   fechaFin: string = '';
   grupoSeleccionado: string = 'Todos';
   estadoSeleccionado: string = 'Todos';
+  diaSeleccionado: string = 'Todos';
 
   gruposDisponibles: string[] = [];
+  diasDisponibles: string[] = ['Todos', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
-  // KPIs
   totalRegistros = 0;
   totalPresentes = 0;
   totalAusentes = 0;
   porcentajeAsistencia = 0;
+  emocionDominante = '';
   resumenEmociones: { [key: string]: number } = {};
-  emocionDominante: string = '';
 
-  // Charts
-  public barChartOptions: Partial<ChartOptions> | any;
-  public pieChartOptions: Partial<PieChartOptions> | any;
+  // Emojis oficiales
+  emojisValidos: string[] = ["🙂", "😐", "😢", "😡", "😴", "😃", "😬", "🤒"];
 
   constructor(private asistenciaService: AsistenciaService) {}
 
@@ -63,7 +46,7 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
   cargarAsistencias() {
     this.asistenciaSub = this.asistenciaService.getTodasAsistencias().subscribe({
       next: data => {
-        this.asistencias = data ?? []; 
+        this.asistencias = data ?? [];
         this.gruposDisponibles = [...new Set(this.asistencias.map(a => a.grupo))];
         this.filtrarDatos();
       },
@@ -95,8 +78,20 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
       data = data.filter(a => a.estado === this.estadoSeleccionado);
     }
 
+    if (this.diaSeleccionado !== 'Todos') {
+      data = data.filter(a => {
+        const dia = this.obtenerDiaSemana(new Date(a.createdAt));
+        return dia === this.diaSeleccionado;
+      });
+    }
+
     this.asistenciasFiltradas = data;
     this.calcularResumen();
+  }
+
+  obtenerDiaSemana(fecha: Date): string {
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    return dias[fecha.getDay()];
   }
 
   calcularResumen() {
@@ -110,39 +105,11 @@ export class DashboardAsistenciaComponent implements OnInit, OnDestroy {
       const emocion = a.emoji || 'Sin dato';
       emociones[emocion] = (emociones[emocion] || 0) + 1;
     });
+
     this.resumenEmociones = emociones;
 
-    // emoción dominante
     const maxEmocion = Object.entries(emociones).reduce((max, current) => current[1] > max[1] ? current : max, ['', 0]);
     this.emocionDominante = maxEmocion[0] ?? '';
-
-    this.generarGraficos();
-  }
-
-  generarGraficos() {
-    // Gráfico de barras (emociones)
-    this.barChartOptions = {
-      series: [{
-        name: "Cantidad",
-        data: Object.values(this.resumenEmociones)
-      }],
-      chart: { type: "bar", height: 350 },
-      xaxis: {
-        categories: Object.keys(this.resumenEmociones)
-      },
-      title: { text: "Distribución de emociones" }
-    };
-
-    // Gráfico de pastel (presentes vs ausentes)
-    this.pieChartOptions = {
-      series: [this.totalPresentes, this.totalAusentes],
-      chart: { type: "pie", height: 350 },
-      labels: ["Presente", "Ausente"],
-      responsive: [{
-        breakpoint: 480,
-        options: { chart: { width: 200 }, legend: { position: "bottom" } }
-      }]
-    };
   }
 
   ngOnDestroy(): void {
