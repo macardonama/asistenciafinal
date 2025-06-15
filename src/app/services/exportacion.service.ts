@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 
 @Injectable({
@@ -20,27 +21,28 @@ export class ExportacionService {
   }
 
   exportarPDFIndividual(datos: any[], estudiante: string, rangoFechas: string) {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text(`Reporte de Asistencia - ${estudiante}`, 10, 20);
-    doc.setFontSize(12);
-    doc.text(`Rango de fechas: ${rangoFechas}`, 10, 30);
+  const doc = new jsPDF();
+  doc.setFontSize(16);
+  doc.text(`Reporte de Asistencia - ${estudiante}`, 10, 20);
+  doc.setFontSize(12);
+  doc.text(`Rango de fechas: ${rangoFechas}`, 10, 30);
 
-    const columnas = ["Fecha", "Estado", "Emoción"];
-    const filas = datos.map(a => [
-      a.createdAt.substring(0, 10),
-      a.estado,
-      a.emoji
-    ]);
+  const columnas = ["Fecha", "Estado", "Emoción"];
+  const filas = datos.map(a => [
+    a.createdAt.substring(0, 10),
+    a.estado,
+    a.emoji
+  ]);
 
-    (doc as any).autoTable({
-      head: [columnas],
-      body: filas,
-      startY: 40
-    });
+  autoTable(doc, {
+    head: [columnas],
+    body: filas,
+    startY: 40
+  });
 
-    doc.save(`asistencia_${estudiante}.pdf`);
-  }
+  doc.save(`asistencia_${estudiante}.pdf`);
+}
+
 
   exportarVistaComoPDF(elementId: string, nombreArchivo: string) {
     const input = document.getElementById(elementId);
