@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EvaluappService {
-  private apiUrl = 'https://asistencia-server.onrender.com/respuestas';
+  private apiUrl = 'https://asistencia-server.onrender.com/respuestas/ranking';
 
   constructor(private http: HttpClient) {}
 
