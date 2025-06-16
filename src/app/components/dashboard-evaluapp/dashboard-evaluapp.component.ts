@@ -23,6 +23,7 @@ export class DashboardEvaluappComponent {
   constructor(private evaluappService: EvaluappService) {}
 
   buscar(): void {
+    console.log("Boton buscar presionado")
     if (!this.fechaInicio || !this.fechaFin) {
       alert('Selecciona un rango de fechas');
       return;
