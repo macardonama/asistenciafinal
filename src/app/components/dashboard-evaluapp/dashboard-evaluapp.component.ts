@@ -35,6 +35,9 @@ export class DashboardEvaluappComponent {
         },
         error: (err: any) => {
           console.error('Error al obtener ranking:', err);
+        if (err.error) {
+          console.error("Detalle del error:", err.error);
+        }  
         }
       });
   }
