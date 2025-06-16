@@ -29,6 +29,12 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./components/dashboard-asistencia/dashboard-asistencia.component').then(m => m.DashboardAsistenciaComponent
     )
+  },
+  {
+  path: 'dashboard-evaluapp',
+  loadComponent: () =>
+    import('./components/dashboard-evaluapp/dashboard-evaluapp.component').then(m => m.DashboardEvaluappComponent)
 }
+
 
 ];
