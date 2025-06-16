@@ -1,26 +1,10 @@
-.graficos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.graficos apx-chart {
-  flex: 1 1 350px;
-  max-width: 450px;
-  min-width: 320px;
-  background: #f7f7f7;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.exportaciones {
-  margin: 10px 0;
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+.btn-volver {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
 }
 
 button {
@@ -36,21 +20,9 @@ button:hover {
   background: #0056b3;
 }
 
-.alertas-container {
-  background: #fff3cd;
-  border: 1px solid #ffeeba;
-  border-radius: 8px;
-  padding: 10px 20px;
-  margin-bottom: 15px;
-  color: #856404;
-}
-
-.alerta-grupo {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.alerta-estudiantes ul {
-  margin: 0;
-  padding-left: 20px;
+.exportaciones {
+  margin: 10px 0;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }

@@ -1,5 +1,8 @@
 <div id="dashboard">
 <h1>Dashboard de Asistencia</h1>
+<div style="margin-bottom: 15px;">
+  <button routerLink="/" class="btn btn-outline-primary">🏠 Volver al inicio</button>
+</div>
 
 <!-- FILTROS -->
 <div class="filtros">
@@ -27,6 +30,8 @@
     <option *ngFor="let dia of diasDisponibles" [value]="dia">{{ dia }}</option>
   </select>
 </div>
+<hr style="margin: 20px 0;">
+
 <div class="exportaciones">
   <button (click)="exportarExcel()">Exportar Excel (Filtrado)</button>
   <button (click)="exportarPDFVista()">Exportar PDF Completo</button>
@@ -52,6 +57,8 @@
     </ul>
   </div>
 </div>
+<hr style="margin: 20px 0;">
+
 
 <!-- KPI -->
 <div class="resumen-cards">
@@ -85,33 +92,4 @@
     [responsive]="pieChartOptions.responsive">
   </apx-chart>
 </div>
-
-<!-- TABLA -->
-<h2>Tabla de registros</h2>
-<div *ngIf="asistenciasFiltradas.length > 0; else noData">
-  <table>
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Nombre</th>
-        <th>Emoji</th>
-        <th>Estado</th>
-        <th>Grupo</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let asistencia of asistenciasFiltradas">
-        <td>{{ asistencia.createdAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-        <td>{{ asistencia.name }}</td>
-        <td>{{ asistencia.emoji }}</td>
-        <td>{{ asistencia.estado }}</td>
-        <td>{{ asistencia.grupo }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<ng-template #noData>
-  <p>No hay datos disponibles.</p>
-</ng-template>
 </div>

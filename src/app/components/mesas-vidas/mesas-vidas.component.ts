@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-mesas-vidas',
   standalone: true,
-   imports: [CommonModule],
+   imports: [CommonModule, RouterModule],
   templateUrl: './mesas-vidas.component.html',
   styleUrls: ['./mesas-vidas.component.css']
 })
