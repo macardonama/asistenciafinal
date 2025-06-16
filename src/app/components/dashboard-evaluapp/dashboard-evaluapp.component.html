@@ -1,0 +1,50 @@
+<p>dashboard-evaluapp works!</p>
+<h1>🏆 Dashboard EvaluApp</h1>
+
+<button class="btn btn-primary" routerLink="/">🔙 Volver al inicio</button>
+
+<div class="filtros">
+  <label>Fecha inicio: <input type="date" [(ngModel)]="fechaInicio"></label>
+  <label>Fecha fin: <input type="date" [(ngModel)]="fechaFin"></label>
+  <label>Grupo:
+    <select [(ngModel)]="grupoSeleccionado">
+      <option *ngFor="let g of grupos" [value]="g">{{g}}</option>
+    </select>
+  </label>
+  <button (click)="buscar()">Buscar</button>
+</div>
+
+<div *ngIf="podio.length > 0">
+  <h2>🏅 Podio</h2>
+  <div class="podio">
+    <div class="puesto oro" *ngIf="podio[0]">
+      🥇 {{ podio[0]._id }} ({{ podio[0].total_puntaje }} pts)
+    </div>
+    <div class="puesto plata" *ngIf="podio[1]">
+      🥈 {{ podio[1]._id }} ({{ podio[1].total_puntaje }} pts)
+    </div>
+    <div class="puesto bronce" *ngIf="podio[2]">
+      🥉 {{ podio[2]._id }} ({{ podio[2].total_puntaje }} pts)
+    </div>
+  </div>
+</div>
+
+<h2>🏅 Ranking completo</h2>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Posición</th>
+      <th>Estudiante</th>
+      <th>Total Puntaje</th>
+      <th>Respuestas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of ranking; let i = index">
+      <td>{{ i+1 }}</td>
+      <td>{{ r._id }}</td>
+      <td>{{ r.total_puntaje }}</td>
+      <td>{{ r.respuestas }}</td>
+    </tr>
+  </tbody>
+</table>
