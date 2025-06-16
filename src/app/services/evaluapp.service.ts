@@ -13,8 +13,8 @@ export class EvaluappService {
   obtenerRanking(grupo: string, fechaInicio: string, fechaFin: string): Observable<any> {
     let params = new HttpParams()
       .set('grupo', grupo)
-      .set('fechainicio', fechaInicio)
-      .set('fechafin', fechaFin);
+      .set('fechaInicio', fechaInicio)
+      .set('fechaFin', fechaFin);
 
     return this.http.get<any>(this.apiUrl, { params });
   }
