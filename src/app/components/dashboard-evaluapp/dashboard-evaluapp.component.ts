@@ -1,45 +1,40 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { EvaluappService } from '../../services/evaluapp.service';
 import { RouterModule } from '@angular/router';
+import { EvaluappService } from '../../services/evaluapp.service';
 
 @Component({
   selector: 'app-dashboard-evaluapp',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  providers: [EvaluappService],  // ✅ agregamos el servicio aquí
+  providers: [EvaluappService],
   templateUrl: './dashboard-evaluapp.component.html',
   styleUrls: ['./dashboard-evaluapp.component.css']
 })
-export class DashboardEvaluappComponent implements OnInit {
+export class DashboardEvaluappComponent {
 
-  grupoSeleccionado: string = '4-3';
+  grupos: string[] = ['4-1', '4-2', '4-3', '4-4', 'Todos'];
+  grupoSeleccionado: string = 'Todos';
   fechaInicio: string = '';
   fechaFin: string = '';
-  ranking: any[] = [];
+  podio: any[] = [];
 
-  private evaluappService = inject(EvaluappService);  // ✅ inyectado correctamente para standalone
+  constructor(private evaluappService: EvaluappService) {}
 
-  ngOnInit(): void { }
-
-  buscarRanking(): void {
-    if (!this.fechaInicio || !this.fechaFin || !this.grupoSeleccionado) {
-      alert('Por favor selecciona fechas y grupo.');
+  buscar(): void {
+    if (!this.fechaInicio || !this.fechaFin) {
+      alert('Selecciona un rango de fechas');
       return;
     }
-
-    this.evaluappService.obtenerRanking(
-      this.grupoSeleccionado,
-      this.fechaInicio,
-      this.fechaFin
-    ).subscribe({
-      next: (data: any) => {
-        this.ranking = data;
-      },
-      error: (err: any) => {
-        console.error('Error al obtener ranking:', err);
-      }
-    });
+    this.evaluappService.obtenerRanking(this.grupoSeleccionado, this.fechaInicio, this.fechaFin)
+      .subscribe({
+        next: (data: any) => {
+          this.podio = data.slice(0, 3);
+        },
+        error: (err: any) => {
+          console.error('Error al obtener ranking:', err);
+        }
+      });
   }
 }
