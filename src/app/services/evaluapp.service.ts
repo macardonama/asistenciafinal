@@ -6,16 +6,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EvaluappService {
-
-  private apiUrl = 'https://asistencia-server.onrender.com/respuestas/ranking';
+  private apiUrl = 'https://asistencia-server.onrender.com/respuestas';
 
   constructor(private http: HttpClient) {}
 
   obtenerRanking(grupo: string, fechaInicio: string, fechaFin: string): Observable<any> {
     let params = new HttpParams()
       .set('grupo', grupo)
-      .set('fechaInicio', fechaInicio)
-      .set('fechaFin', fechaFin);
+      .set('fechainicio', fechaInicio)
+      .set('fechafin', fechaFin);
 
     return this.http.get<any>(this.apiUrl, { params });
   }
