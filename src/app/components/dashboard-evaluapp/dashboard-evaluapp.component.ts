@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { EvaluappService } from '../../services/evaluapp.service';  // Cambia si tu service está en otra ruta
+import { EvaluappService } from '../../services/evaluapp.service';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-evaluapp',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
+  providers: [EvaluappService],  // ✅ agregamos el servicio aquí
   templateUrl: './dashboard-evaluapp.component.html',
   styleUrls: ['./dashboard-evaluapp.component.css']
 })
@@ -18,11 +19,11 @@ export class DashboardEvaluappComponent implements OnInit {
   fechaFin: string = '';
   ranking: any[] = [];
 
-  constructor(private evaluappService: EvaluappService) { }
+  private evaluappService = inject(EvaluappService);  // ✅ inyectado correctamente para standalone
 
   ngOnInit(): void { }
 
-  buscarRanking() {
+  buscarRanking(): void {
     if (!this.fechaInicio || !this.fechaFin || !this.grupoSeleccionado) {
       alert('Por favor selecciona fechas y grupo.');
       return;
@@ -33,10 +34,10 @@ export class DashboardEvaluappComponent implements OnInit {
       this.fechaInicio,
       this.fechaFin
     ).subscribe({
-      next: data => {
+      next: (data: any) => {
         this.ranking = data;
       },
-      error: err => {
+      error: (err: any) => {
         console.error('Error al obtener ranking:', err);
       }
     });
