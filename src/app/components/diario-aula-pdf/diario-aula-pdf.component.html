@@ -1,0 +1,14 @@
+<div class="container">
+  <h2>Generar PDF Diario de Aula</h2>
+
+  <label>Grupo:</label>
+  <input type="text" [(ngModel)]="grupo" placeholder="Ej: 4-1" />
+
+  <label>Fecha Inicio:</label>
+  <input type="date" [(ngModel)]="fechainicio" />
+
+  <label>Fecha Fin:</label>
+  <input type="date" [(ngModel)]="fechafin" />
+
+  <button (click)="generarPDF()">Generar PDF</button>
+</div>

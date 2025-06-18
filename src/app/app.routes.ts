@@ -34,7 +34,10 @@ export const routes: Routes = [
   path: 'dashboard-evaluapp',
   loadComponent: () =>
     import('./components/dashboard-evaluapp/dashboard-evaluapp.component').then(m => m.DashboardEvaluappComponent)
-}
-
-
+  },
+  {
+  path: 'diario-aula-pdf',
+  loadComponent: () =>
+    import('./components/diario-aula-pdf/diario-aula-pdf.component').then(m => m.DiarioAulaPdfComponent)
+ }   
 ];
