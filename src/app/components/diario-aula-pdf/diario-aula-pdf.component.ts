@@ -3,10 +3,11 @@ import { DiarioAulaService } from '../../services/diario-aula.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-diario-aula-pdf',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,RouterModule],
   templateUrl: './diario-aula-pdf.component.html',
   styleUrls: ['./diario-aula-pdf.component.css']
 })
